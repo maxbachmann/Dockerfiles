@@ -6,6 +6,7 @@ authelia/*
 !authelia/docker-compose.yml
 nextcloud/*
 !nextcloud/docker-compose.yaml
+!nextcloud/Dockerfile
 collabora/*
 #!collabora/docker-compose.yaml
 traefik/*
