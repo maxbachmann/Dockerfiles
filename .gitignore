@@ -12,7 +12,7 @@ collabora/*
 traefik/*
 !traefik/docker-compose.yaml
 paperless/*
-#!paperless/docker-compose.yaml
+!paperless/docker-compose_clean.yaml
 dashy/*
 !dashy/docker-compose.yaml
 gitea/*
@@ -35,3 +35,6 @@ psql/*
 !psql/docker-compose.yaml
 psql-test*
 rustdesk/*
+invoiceninja/*
+!invoiceninja/docker-compose.yaml
+
