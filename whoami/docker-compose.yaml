@@ -1,0 +1,21 @@
+version: '3.1'
+
+services:
+    whoami:
+        image: "traefik/whoami"
+        container_name: "whoami"
+        labels:
+            traefik.enable: true
+            traefik.http.routers.whoami.rule: Host(`whoami.jomer.dev`)
+            traefik.http.routers.whoami.entrypoints: websecure
+            traefik.http.routers.whoami.tls.certresolver: letsencrypt
+            traefik.http.routers.whoami.middlewares: internal-network
+            traefik.docker.network: whoami_frontend
+        networks:
+            - whoami_frontend
+
+networks:
+    whoami_frontend:
+      name: whoami_frontend
+      enable_ipv6: false
+    

@@ -1,0 +1,34 @@
+version: '3.9'
+
+services:
+    nextcloud:
+        container_name: nextcloud
+        hostname: nextcloud
+        build: 
+            context: .
+            network: host
+        restart: unless-stopped
+        volumes:
+            - ./data:/var/www/html
+        networks:
+            - psql_backend
+            - nextcloud_frontend
+        # depends_on:
+            # - "psql"
+        expose:
+            - 80
+        labels:
+            traefik.enable: true
+            traefik.http.routers.nextcloud.rule: Host(`cloud.jomer.dev`)
+            traefik.http.routers.nextcloud.entrypoints: websecure
+            traefik.http.routers.nextcloud.tls.certresolver: letsencrypt
+            traefik.http.services.nextcloud.loadbalancer.server.port: 80
+            traefik.docker.network: nextcloud_frontend
+            
+
+networks:
+    psql_backend:
+        external: true
+    nextcloud_frontend:
+        name: nextcloud_frontend
+    

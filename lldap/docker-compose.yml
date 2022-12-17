@@ -1,0 +1,45 @@
+version: '3'
+
+services:
+  lldap:
+    container_name: ldap
+    image: nitnelave/lldap:stable
+    ports:
+      # LDAP
+      - "3890:3890"
+    volumes:
+      - ./lldap_data:/data
+    environment:
+      - TZ=Europe/Berlin
+      - LLDAP_JWT_SECRET_FILE=/run/secrets/lldap-jwt-secret
+      - LLDAP_LDAP_USER_PASS_FILE=/run/secrets/lldap-password
+      - LLDAP_LDAP_BASE_DN=dc=jomer,dc=dev
+    restart: unless-stopped
+    networks:
+      - ldap_backend
+      - ldap_frontend
+    secrets:
+      - lldap-password
+      - lldap-jwt-secret
+    labels:
+      traefik.enable: true
+      traefik.http.routers.lldap.rule: Host(`ldap.jomer.dev`)
+      traefik.http.routers.lldap.entrypoints: websecure
+      traefik.http.routers.lldap.tls.certresolver: letsencrypt
+      traefik.http.routers.lldap.middlewares: internal-network
+      traefik.http.services.lldap.loadbalancer.server.port: 17170
+      traefik.docker.network: ldap_frontend
+
+networks:
+  ldap_backend:
+    name: ldap_backend
+  ldap_frontend:
+    name: ldap_frontend
+
+secrets:
+    lldap-password:
+        file: ../.secrets/lldap/password
+        name: lldap-password
+    lldap-jwt-secret:
+        file: ../.secrets/lldap/jwt_secret
+        name: lldap-jwt-secret
