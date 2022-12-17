@@ -32,7 +32,7 @@ lldap/*
 mariadb/*
 !mariadb/docker-compose.yaml
 psql/*
-!psql/docker-compose.yaml
+!psql/docker-compose.yml
 psql-test*
 rustdesk/*
 invoiceninja/*

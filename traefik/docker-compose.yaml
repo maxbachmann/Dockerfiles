@@ -36,7 +36,7 @@ services:
             traefik.http.routers.traefik.tls.certresolver: letsencrypt
             #traefik.http.routers.traefik.rule: Host(`traefik.jomer.dev`)
             traefik.http.routers.traefik.service: api@internal
-            traefik.http.routers.traefik.middlewares: internal-network
+            traefik.http.routers.traefik.middlewares: internal-network, authelia@docker
             # private network ip whitelist
             traefik.http.middlewares.internal-network.ipwhitelist.sourcerange: "192.168.178.0/24, 10.6.0.0/24"
         networks:
