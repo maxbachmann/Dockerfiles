@@ -19,7 +19,7 @@ services:
             - "--certificatesresolvers.letsencrypt.acme.httpchallenge=true"
             - "--certificatesresolvers.letsencrypt.acme.httpchallenge.entrypoint=web"
             #- "--certificatesresolvers.letsencrypt.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory"
-            - "--certificatesresolvers.letsencrypt.acme.email=jonathan.gilmer@posteo.de"
+            - "--certificatesresolvers.letsencrypt.acme.email=netcup@maxbachmann.de"
             - "--certificatesresolvers.letsencrypt.acme.storage=/letsencrypt/acme.json"
             - "--providers.file.filename=/configs/proxmox-router.yaml"
         ports:
@@ -31,32 +31,20 @@ services:
             - "/var/run/docker.sock:/var/run/docker.sock:ro"
         labels:
             traefik.enable: true
-            traefik.http.routers.traefik.rule: Host(`traefik.jomer.dev`)
+            traefik.http.routers.traefik.rule: Host(`traefik.maxbachmann.de`)
             traefik.http.routers.traefik.entrypoints: websecure
             traefik.http.routers.traefik.tls.certresolver: letsencrypt
-            #traefik.http.routers.traefik.rule: Host(`traefik.jomer.dev`)
+            #traefik.http.routers.traefik.rule: Host(`traefik.maxbachmann.de`)
             traefik.http.routers.traefik.service: api@internal
-            traefik.http.routers.traefik.middlewares: internal-network, authelia@docker
+            traefik.http.routers.traefik.middlewares: internal-network
             # private network ip whitelist
             traefik.http.middlewares.internal-network.ipwhitelist.sourcerange: "192.168.178.0/24, 10.6.0.0/24"
         networks:
             - pihole_frontend
-            - portainer_frontend
             - paperless_frontend
             - nextcloud_frontend
-            - invoiceninja_frontend
-            - ig_193_frontend
-            - gitea_frontend
-            - linkace_frontend
-            - whoami_frontend
             - psql-test_frontend
-            - rustdesk_frontend
-            - ig-nextcloud_frontend
-            - collabora_frontend
-            - grist_frontend
-            - dashy_frontend
-            - ldap_frontend
-            - authelia_frontend
+            - mealie_frontend
 
 networks:
     nextcloud_frontend:
@@ -65,31 +53,7 @@ networks:
         name: pihole_frontend
     paperless_frontend:
         name: paperless_frontend
-    portainer_frontend:
-        name: portainer_frontend
-    invoiceninja_frontend:
-        name: invoiceninja_frontend
-    ig_193_frontend:
-        name: ig_193_frontend
-    gitea_frontend:
-        name: gitea_frontend
-    linkace_frontend:
-        name: linkace_frontend
-    whoami_frontend:
-        name: whoami_frontend
     psql-test_frontend:
         name: psql-test_frontend
-    rustdesk_frontend:
-        name: rustdesk_frontend
-    ig-nextcloud_frontend:
-        name: ig-nextcloud_frontend
-    collabora_frontend:
-        name: collabora_frontend
-    grist_frontend:
-        name: grist_frontend
-    dashy_frontend:
-        name: dashy_frontend
-    ldap_frontend:
-        name: ldap_frontend
-    authelia_frontend:
-        name: authelia_frontend
+    mealie_frontend:
+        name: mealie_frontend

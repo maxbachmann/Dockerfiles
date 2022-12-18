@@ -24,7 +24,7 @@ services:
 
 networks:
     backend:
-        name: psql_backend    
+        name: psql_backend
 
 secrets:
     psql-password:

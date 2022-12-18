@@ -77,21 +77,19 @@ services:
       PAPERLESS_PORT: 80
       PAPERLESS_CONVERT_MEMORY_LIMIT: 32
       PAPERLESS_TIME_ZONE: Europe/Berlin
-      PAPERLESS_URL: https://paperless.jomer.dev
+      PAPERLESS_URL: https://paperless.maxbachmann.de
       PAPERLESS_SECRET_KEY: <GENERATE KEY>
       # PAPERLESS_TRASH_DIR: “media/trash”
       PAPERLESS_DBPASS: '<GENERATE PASSWORD>'
-      PAPERLESS_OCR_LANGUAGE: deu
+      PAPERLESS_OCR_LANGUAGE: deu+eng
     labels:
       traefik.enable: true
-      traefik.http.routers.paperless.rule: Host(`paperless.jomer.dev`)
+      traefik.http.routers.paperless.rule: Host(`paperless.maxbachmann.de`)
       traefik.http.routers.paperless.entrypoints: websecure
       traefik.http.routers.paperless.tls.certresolver: letsencrypt
       traefik.http.routers.paperless.middlewares: internal-network
       traefik.http.services.paperless.loadbalancer.server.port: 80
       traefik.docker.network: paperless_frontend
-      
-    
 
   gotenberg:
     image: docker.io/gotenberg/gotenberg:7.4

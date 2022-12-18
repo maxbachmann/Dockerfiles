@@ -14,8 +14,8 @@ services:
       #- "80:80/tcp"
     environment:
       TZ: 'Europe/Berlin'
-      VIRTUAL_HOST: "pihole.jomer.dev"
-      LETSENCRYPT_HOST: "pihole.jomer.dev"
+      VIRTUAL_HOST: "pihole.maxbachmann.de"
+      LETSENCRYPT_HOST: "pihole.maxbachmann.de"
       NETWORK_ACCESS: internal
     # Volumes store your data between container upgrades
     volumes:
@@ -23,13 +23,13 @@ services:
       - './etc-dnsmasq.d:/etc/dnsmasq.d'
     #   https://github.com/pi-hole/docker-pi-hole#note-on-capabilities
     cap_add:
-      - NET_ADMIN # Recommended but not required (DHCP needs NET_ADMIN)      
+      - NET_ADMIN # Recommended but not required (DHCP needs NET_ADMIN)
     restart: unless-stopped
     networks:
       - pihole_frontend
     labels:
       traefik.enable: true
-      traefik.http.routers.pihole.rule: Host(`pihole.jomer.dev`)
+      traefik.http.routers.pihole.rule: Host(`pihole.maxbachmann.de`)
       traefik.http.routers.pihole.entrypoints: websecure
       traefik.http.routers.pihole.tls.certresolver: letsencrypt
       traefik.http.routers.pihole.middlewares: internal-network

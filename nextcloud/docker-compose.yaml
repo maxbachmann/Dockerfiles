@@ -4,7 +4,7 @@ services:
     nextcloud:
         container_name: nextcloud
         hostname: nextcloud
-        build: 
+        build:
             context: .
             network: host
         restart: unless-stopped
@@ -19,16 +19,14 @@ services:
             - 80
         labels:
             traefik.enable: true
-            traefik.http.routers.nextcloud.rule: Host(`cloud.jomer.dev`)
+            traefik.http.routers.nextcloud.rule: Host(`cloud.maxbachmann.de`)
             traefik.http.routers.nextcloud.entrypoints: websecure
             traefik.http.routers.nextcloud.tls.certresolver: letsencrypt
             traefik.http.services.nextcloud.loadbalancer.server.port: 80
             traefik.docker.network: nextcloud_frontend
-            
 
 networks:
     psql_backend:
         external: true
     nextcloud_frontend:
         name: nextcloud_frontend
-    
