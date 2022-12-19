@@ -1,0 +1,2 @@
+ACTION=="add", KERNEL=="sd?", SUBSYSTEM=="block", ENV{ID_BUS}=="usb", ENV{ID_SERIAL_SHORT}=="575831324431323636384439", SYMLINK+="daily_backup"
+ACTION=="add", KERNEL=="sd?", SUBSYSTEM=="block", ENV{ID_BUS}=="usb", ENV{ID_SERIAL_SHORT}=="575838324439314A37463839", SYMLINK+="manual_backup", ENV{SYSTEMD_WANTS}="manual_backup.service"

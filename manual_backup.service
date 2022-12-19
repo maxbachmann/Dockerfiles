@@ -1,0 +1,6 @@
+[Unit]
+Description=Manual Backup
+
+[Service]
+Type=simple
+ExecStart=/opt/manual_backup.sh
