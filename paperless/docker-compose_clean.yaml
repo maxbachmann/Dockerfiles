@@ -36,7 +36,7 @@ services:
     image: docker.io/library/redis:6.0
     restart: unless-stopped
     volumes:
-      - ./redisdata:/data
+      - ./redisdata:/data:Z
     networks:
       - paperless_backend
     deploy:
@@ -63,11 +63,10 @@ services:
       timeout: 10s
       retries: 5
     volumes:
-      - ./data:/usr/src/paperless/data
-      - ./media:/usr/src/paperless/media
-      - ./export:/usr/src/paperless/export
-      - ./consume:/usr/src/paperless/consume
-    env_file: docker-compose.env
+      - ./data:/usr/src/paperless/data:Z
+      - ./media:/usr/src/paperless/media:Z
+      - ./export:/usr/src/paperless/export:Z
+      - ./consume:/usr/src/paperless/consume:Z
     environment:
       PAPERLESS_REDIS: redis://broker:6379
       PAPERLESS_DBHOST: psql
@@ -86,7 +85,7 @@ services:
       traefik.enable: true
       traefik.http.routers.paperless.rule: Host(`paperless.maxbachmann.de`)
       traefik.http.routers.paperless.entrypoints: websecure
-      traefik.http.routers.paperless.tls.certresolver: letsencrypt
+      traefik.http.routers.paperless.tls.certresolver: netcup
       traefik.http.routers.paperless.middlewares: internal-network
       traefik.http.services.paperless.loadbalancer.server.port: 80
       traefik.docker.network: paperless_frontend

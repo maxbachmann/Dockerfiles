@@ -7,7 +7,7 @@ services:
         depends_on:
             - mealie-api
         volumes:
-          - ./data/:/app/data/
+          - ./data/:/app/data/:Z
         networks:
             - psql_backend
             - mealie_frontend
@@ -19,7 +19,7 @@ services:
             traefik.enable: true
             traefik.http.routers.mealie.rule: Host(`mealie.maxbachmann.de`)
             traefik.http.routers.mealie.entrypoints: websecure
-            traefik.http.routers.mealie.tls.certresolver: letsencrypt
+            traefik.http.routers.mealie.tls.certresolver: netcup
             traefik.http.services.mealie.loadbalancer.server.port: 3000
             traefik.docker.network: mealie_frontend
 
@@ -34,7 +34,7 @@ services:
         # depends_on:
             # - "psql"
         volumes:
-          - ./data/:/app/data/
+          - ./data/:/app/data/:Z
         networks:
             - psql_backend
             - mealie_frontend
@@ -49,8 +49,8 @@ services:
 
             # Database Settings
             DB_ENGINE: postgres
-            POSTGRES_USER: postgres
-            POSTGRES_PASSWORD: mealie
+            POSTGRES_USER: mealie
+            POSTGRES_PASSWORD: <password>
             POSTGRES_SERVER: psql
             POSTGRES_PORT: 5432
             POSTGRES_DB: mealie
