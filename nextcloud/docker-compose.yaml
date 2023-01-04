@@ -17,12 +17,22 @@ services:
             # - "psql"
         expose:
             - 80
+        environment:
+            # retrieve using docker inspect traefik
+            TRUSTED_PROXIES: 172.22.0.3/16
+            OVERWRITEPROTOCOL: https
+            OVERWRITECLIURL: https://cloud.maxbachmann.de
+            OVERWRITEHOST: cloud.maxbachmann.de
         labels:
             traefik.enable: true
             traefik.http.routers.nextcloud.rule: Host(`cloud.maxbachmann.de`)
             traefik.http.routers.nextcloud.entrypoints: websecure
             traefik.http.routers.nextcloud.tls.certresolver: netcup
             traefik.http.services.nextcloud.loadbalancer.server.port: 80
+            traefik.http.routers.nextcloud.middlewares: 'nextcloud_redirectregex'
+            traefik.http.middlewares.nextcloud_redirectregex.redirectregex.permanent: true
+            traefik.http.middlewares.nextcloud_redirectregex.redirectregex.regex: 'https://(.*)/.well-known/(?:card|cal)dav'
+            traefik.http.middlewares.nextcloud_redirectregex.redirectregex.replacement: 'https://$${1}/remote.php/dav'
             traefik.docker.network: nextcloud_frontend
 
 networks:
