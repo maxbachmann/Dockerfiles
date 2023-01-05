@@ -1,15 +1,18 @@
 # Installation
 ## Fedora Server
+```
 Language: English US
 Keyboard: German (no dead keys)
 Hostname: orontes
 Packets: Headless server...
-User: cfolkers
+User: maxbachmann
+
 Disk:
     btrfs volume
         @ subvolume for /
         @home subvolume for /home
         @var subvolume for /var
+```
 
 ## auto updates:
 ```
