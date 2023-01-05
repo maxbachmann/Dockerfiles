@@ -12,12 +12,15 @@ Disk:
         @var subvolume for /var
 
 ## auto updates:
+```
 sudo dnf install dnf-automatic
 /etc/dnf/automatic.conf
     apply_updates = yes
 sudo systemctl enable --now dnf-automatic.timer
+```
 
 ## snapper:
+```
 sudo dnf install snapper python3-dnf-plugin-snapper
 sudo snapper -c root create-config /
 sudo btrfs subvolume delete /.snapshots
@@ -41,10 +44,12 @@ sudo grubby --update-kernel=ALL --remove-args="rootflags=subvol=@"
 sudo snapper set-config TIMELINE_LIMIT_YEARLY=0
 sudo systemctl enable --now snapper-timeline.timer
 sudo systemctl enable --now snapper-cleanup.timer
+```
 documentation:
     https://craftycoder.com/blog/fedora-snapper/
 
 ## data
+```
 sudo semanage fcontext -a -t snapperd_data_t "/srv/\.snapshots(/.*)?"
 sudo mkfs.btrfs /dev/sdb
 sudo mkdir /mnt/btrfs
@@ -60,8 +65,10 @@ sudo systemctl daemon-reload
 sudo mount -a
 sudo snapper -c data create-config /srv
 sudo snapper -c data set-config NUMBER_LIMIT=3
+```
 
 ## backup
+```
 sudo dnf install rdiff-backup hdparm udisks
 sudo cp backup.timer /etc/systemd/system/
 sudo cp backup.service /etc/systemd/system/
@@ -75,6 +82,7 @@ sudo mkdir /mnt/daily_backup
 sudo mkdir /mnt/manual_backup
 sudo systemctl enable --now backup.timer
 sudo udevadm control --reload
+```
 
 documentation:
     run backup:
