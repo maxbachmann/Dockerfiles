@@ -88,10 +88,12 @@ sudo udevadm control --reload
 ```
 
 documentation:
+```
     run backup:
         sudo systemctl start backup
     format disks without partition table as ext4 label "Daily Backup N"
     sudo udevadm info /dev/sd? | grep ID_SERIAL_SHORT
+```
 
 
 ## srv:
