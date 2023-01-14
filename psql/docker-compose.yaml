@@ -1,0 +1,25 @@
+version: '3.1'
+
+services:
+    psql:
+        container_name: psql
+        hostname: psql
+        image: postgres:14
+        restart: always
+        volumes:
+            - ./conf:/etc/postgresql:Z
+            - ./data:/var/lib/postgresql/data/pgdata:Z
+        environment:
+            POSTGRES_PASSWORD: dhahseb32eq3e32jerernd
+            PGDATA: /var/lib/postgresql/data/pgdata
+        networks:
+            - backend
+#        healthcheck:
+#            test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER}"]
+#            interval: 10s
+#            timeout: 5s
+#            retries: 5
+
+networks:
+    backend:
+        name: psql_backend

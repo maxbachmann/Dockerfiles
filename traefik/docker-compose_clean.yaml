@@ -1,0 +1,87 @@
+version: "3.3"
+
+services:
+    traefik:
+        image: "traefik:v2.8"
+        container_name: "traefik"
+        restart: unless-stopped
+        command:
+            - "--api.dashboard=true"
+            - "--api.insecure=true"
+            - "--providers.docker=true"
+            - "--providers.docker.exposedbydefault=false"
+            - "--providers.docker.endpoint=tcp://socket-proxy:2375"
+            - "--entrypoints.web.address=:80"
+            - "--entrypoints.web.http.redirections.entrypoint.to=websecure"
+            - "--entrypoints.web.http.redirections.entrypoint.scheme=https"
+            - "--entrypoints.websecure.address=:443"
+            #- "--certificatesresolvers.netcup.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory"
+            - "--certificatesresolvers.netcup.acme.dnschallenge=true"
+            - "--certificatesresolvers.netcup.acme.dnschallenge.provider=netcup"
+            - "--certificatesresolvers.netcup.acme.dnschallenge.delayBeforeCheck=900"
+            - "--certificatesresolvers.netcup.acme.email=netcup@maxbachmann.de"
+            - "--certificatesresolvers.netcup.acme.storage=/letsencrypt/acme.json"
+            - "--log.filePath=/logs/traefik.log"
+            #- "--log.level=DEBUG"
+        ports:
+            - "80:80"
+            - "443:443"
+        environment:
+            - "NETCUP_CUSTOMER_NUMBER=<INSERT>"
+            - "NETCUP_API_KEY=<INSERT>"
+            - "NETCUP_API_PASSWORD=<INSERT>"
+        volumes:
+            - ./letsencrypt:/letsencrypt:Z
+            - ./configs:/configs:Z
+            - ./logs:/logs:Z
+        labels:
+            traefik.enable: true
+            traefik.http.routers.traefik.rule: Host(`traefik.maxbachmann.de`)
+            traefik.http.routers.traefik.entrypoints: websecure
+            traefik.http.routers.traefik.tls.certresolver: netcup
+            #traefik.http.routers.traefik.rule: Host(`traefik.maxbachmann.de`)
+            traefik.http.routers.traefik.service: api@internal
+            traefik.http.routers.traefik.middlewares: internal-network
+            # private network ip whitelist
+            traefik.http.middlewares.internal-network.ipwhitelist.sourcerange: "192.168.178.0/24, 10.6.0.0/24"
+        networks:
+            - pihole_frontend
+            - portainer_frontend
+            - paperless_frontend
+            - nextcloud_frontend
+            - psql-test_frontend
+            - mealie_frontend
+            - socket_proxy
+        depends_on:
+            - socket-proxy
+
+    socket-proxy:
+        image: tecnativa/docker-socket-proxy
+        container_name: "socket-proxy"
+        restart: unless-stopped
+        privileged: true
+        volumes:
+            - /var/run/docker.sock:/var/run/docker.sock:ro
+        environment:
+            NETWORKS: 1
+            SERVICES: 1
+            TASKS: 1
+            CONTAINERS: 1
+        networks:
+            - socket_proxy
+
+networks:
+    nextcloud_frontend:
+        name: nextcloud_frontend
+    pihole_frontend:
+        name: pihole_frontend
+    paperless_frontend:
+        name: paperless_frontend
+    portainer_frontend:
+        name: portainer_frontend
+    psql-test_frontend:
+        name: psql-test_frontend
+    mealie_frontend:
+        name: mealie_frontend
+    socket_proxy:
+        name: socket_proxy
