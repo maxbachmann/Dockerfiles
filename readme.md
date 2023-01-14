@@ -122,7 +122,7 @@ cd /srv/psql
 sudo docker-compose pull
 sudo docker-compose up -d
 sudo chattr +C /srv/psql/data
-# create databases for nextcloud and paperless
+# create databases for nextcloud, paperless, firefly, mealie
 sudo docker exec -ti -u postgres psql bash
 psql
 create database paperless;
@@ -134,6 +134,9 @@ grant all privileges on database nextcloud to nextcloud;
 create database mealie;
 create user mealie with encrypted password 'mypass';
 grant all privileges on database mealie to mealie;
+create database firefly;
+create user firefly with encrypted password 'mypass';
+grant all privileges on database firefly to firefly;
 \q
 exit
 
